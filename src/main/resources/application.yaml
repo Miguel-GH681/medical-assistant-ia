@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: medical-assistant
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/medassistant
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
