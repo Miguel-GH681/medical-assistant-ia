@@ -12,4 +12,6 @@ public interface AssistantService {
     String analyzeSymptoms(String symptoms, String model);
 
     String diagnoseWithReasoning(String symptoms, String model);
+
+    String consult(String query, String model);
 }
