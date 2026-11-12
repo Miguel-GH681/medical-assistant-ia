@@ -8,3 +8,6 @@ spring:
       chat:
         options:
           model: gemma4:e4b
+          temperature: 0.5
+          top-p: 0.85
+          num-predict: 2048

@@ -3,6 +3,7 @@ package com.cosmos.medical_assistant.service;
 import com.cosmos.medical_assistant.config.ClientResolver;
 import com.cosmos.medical_assistant.dto.analysis.ConditionSummary;
 import com.cosmos.medical_assistant.dto.analysis.PossibleCondition;
+import com.cosmos.medical_assistant.dto.analysis.QueryClassification;
 import com.cosmos.medical_assistant.dto.analysis.SymptomAnalysis;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +65,18 @@ public class AnalysisServiceImp implements AnalysisService{
             .user(message)
             .call()
             .entity(SymptomAnalysis.class);
+    }
+
+    @Override
+    public QueryClassification queryClassification(String query, String model) {
+        log.info("Clasificación de la consulta: modelo - {}", model);
+
+        return clientResolver.resolve(model)
+            .prompt()
+            .user("Clasifica la siguiente consulta del paciente. " +
+                    "Determina qué tipo de consulta es y explica brevemente por qué lo clasificaste así. " +
+                    "Consulta del paciente: " + query)
+            .call()
+            .entity(QueryClassification.class);
     }
 }

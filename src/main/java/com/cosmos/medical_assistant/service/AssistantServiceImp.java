@@ -1,6 +1,7 @@
 package com.cosmos.medical_assistant.service;
 
 import com.cosmos.medical_assistant.config.ClientResolver;
+import com.cosmos.medical_assistant.tools.AppointmentSearchTool;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +18,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AssistantServiceImp implements AssistantService {
 
+    private final AppointmentSearchTool appointmentSearchTool;
+
     private PromptTemplate explainConditionTemplate;
     private PromptTemplate symptomAnalysisTemplate;
     private PromptTemplate diagnoseWithReasoningTemplate;
     private PromptTemplate consultationTemplate;
-    private ClientResolver clientResolver;
+    private final ClientResolver clientResolver;
 
     @Value("classpath:prompts/explain-condition.st")
     private Resource explainConditionPrompt;
@@ -48,6 +51,7 @@ public class AssistantServiceImp implements AssistantService {
         log.info("Chat request - modelo {}", model);
         return clientResolver.resolve(model)
             .prompt(prompt)
+            .tools(appointmentSearchTool)
             .call()
             .content();
     }

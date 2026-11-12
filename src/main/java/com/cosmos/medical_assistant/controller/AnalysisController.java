@@ -2,6 +2,7 @@ package com.cosmos.medical_assistant.controller;
 
 import com.cosmos.medical_assistant.dto.ChatRequest;
 import com.cosmos.medical_assistant.dto.analysis.ConditionSummary;
+import com.cosmos.medical_assistant.dto.analysis.QueryClassification;
 import com.cosmos.medical_assistant.dto.analysis.SymptomAnalysis;
 import com.cosmos.medical_assistant.service.AnalysisService;
 import jakarta.validation.Valid;
@@ -34,5 +35,10 @@ public class AnalysisController {
     @PostMapping("/symptoms")
     public ResponseEntity<SymptomAnalysis> analyzeSymptoms(@Valid @RequestBody ChatRequest request){
         return ResponseEntity.ok(analysisService.symptomsAnalysis(request.prompt(), request.model()));
+    }
+
+    @PostMapping("/classify")
+    public ResponseEntity<QueryClassification> queryClassify(@Valid @RequestBody ChatRequest request){
+        return ResponseEntity.ok(analysisService.queryClassification(request.prompt(), request.model()));
     }
 }
