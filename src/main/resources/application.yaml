@@ -10,3 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/medassistant
