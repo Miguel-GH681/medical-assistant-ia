@@ -18,8 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AssistantServiceImp implements AssistantService {
 
-    private final AppointmentSearchTool appointmentSearchTool;
-
     private PromptTemplate explainConditionTemplate;
     private PromptTemplate symptomAnalysisTemplate;
     private PromptTemplate diagnoseWithReasoningTemplate;
@@ -47,11 +45,11 @@ public class AssistantServiceImp implements AssistantService {
     }
 
     @Override
-    public String chat(String prompt, String model) {
+    public String chat(String prompt, String model, Long userId) {
         log.info("Chat request - modelo {}", model);
         return clientResolver.resolve(model)
             .prompt(prompt)
-            .tools(appointmentSearchTool)
+            .toolContext(Map.of("userId", userId))
             .call()
             .content();
     }

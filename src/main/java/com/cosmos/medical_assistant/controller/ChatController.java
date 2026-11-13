@@ -16,8 +16,11 @@ public class ChatController {
     private final AssistantService assistantService;
 
     @PostMapping
-    public ResponseEntity<String> chat(@RequestBody ChatRequest chatRequest){
-        return ResponseEntity.ok(assistantService.chat(chatRequest.prompt(), chatRequest.model()));
+    public ResponseEntity<String> chat(
+        @RequestBody ChatRequest chatRequest,
+        @RequestHeader(value = "X-User-Id", defaultValue = "1") Long userId
+    ){
+        return ResponseEntity.ok(assistantService.chat(chatRequest.prompt(), chatRequest.model(), userId));
     }
 
     @PostMapping(value = "/stream", produces = "text/event-stream; charset=UTF-8")

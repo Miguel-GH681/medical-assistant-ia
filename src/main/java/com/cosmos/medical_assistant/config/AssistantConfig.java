@@ -1,5 +1,9 @@
 package com.cosmos.medical_assistant.config;
 
+import com.cosmos.medical_assistant.tools.AppointmentSearchTool;
+import com.cosmos.medical_assistant.tools.DoctorInfoTool;
+import com.cosmos.medical_assistant.tools.PatientInfoTool;
+import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.google.genai.GoogleGenAiChatModel;
 import org.springframework.ai.ollama.OllamaChatModel;
@@ -13,10 +17,15 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 @Configuration
+@RequiredArgsConstructor
 public class AssistantConfig {
 
     @Value("classpath:prompts/system-prompt.st")
     private Resource systemPromptResource;
+
+    private final AppointmentSearchTool appointmentSearchTool;
+    private final DoctorInfoTool doctorInfoTool;
+    private final PatientInfoTool patientInfoTool;
 
     @Bean("geminiClient")
     ChatClient geminiClient(GoogleGenAiChatModel chatModel) throws IOException {
@@ -27,6 +36,7 @@ public class AssistantConfig {
         return ChatClient
             .builder(chatModel)
             .defaultSystem(systemPrompt)
+            .defaultTools(appointmentSearchTool, doctorInfoTool, patientInfoTool)
             .build();
     }
 
@@ -39,6 +49,7 @@ public class AssistantConfig {
         return ChatClient
             .builder(chatModel)
             .defaultSystem(systemPrompt)
+            .defaultTools(appointmentSearchTool, doctorInfoTool, patientInfoTool)
             .build();
     }
 }
